@@ -1,2 +1,6 @@
-# dz-area
-Polymer web component that creates a file upload area with dropzone.js.
+# fu-area
+Polymer web component for drag and drop file uploads.
+
+## Docs & Demo
+
+See the [component page](http://pkaske.github.io/fu-area) for more information.
