@@ -171,8 +171,8 @@ Polymer web component for drag and drop file uploads.
       <template is="dom-repeat" items="{{files}}">
         <div class="file" id="{{item.id}}" error$="{{item.error}}">
           <div class="file-item">
-            <paper-icon-button icon="delete" on-tap="_onDelete" hidden$="[[_computeShowDelete(item)]]"></paper-icon-button>
-            <div class="progress" hidden$="[[_computeShowProgress(item)]]">
+            <paper-icon-button icon="delete" on-tap="_onDelete" hidden$="[[!item.error]]"></paper-icon-button>
+            <div class="progress" hidden$="[[item.error]]">
               <iron-icon class="bg-icon" icon="editor:insert-drive-file"></iron-icon>
               <div class="front-icon-wrap">
                 <iron-icon class="front-icon" icon="editor:insert-drive-file"></iron-icon>
@@ -595,17 +595,6 @@ Polymer web component for drag and drop file uploads.
           this._allFinished();
         }
       }, 100);
-    },
-
-    _computeShowProgress: function(file) {
-      return file.error;
-    },
-
-    _computeShowDelete: function(file) {
-      if (file.errType || file.errSize) {
-        return false;
-      }
-      return true;
     },
 
     _uuid: function() {
