@@ -587,12 +587,14 @@ Polymer web component for drag and drop file uploads.
         wasProcessing: wasProcessing
       });
 
-      var index = this._indexOf(file);
-      this.splice('files', index, 1);
+      this.async(function() {
+        var index = this._indexOf(file);
+        this.splice('files', index, 1);
 
-      if (this.files.length == 0) {
-        this._allFinished();
-      }
+        if (this.files.length == 0) {
+          this._allFinished();
+        }
+      }, 100);
     },
 
     _computeShowProgress: function(file) {
