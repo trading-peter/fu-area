@@ -39,14 +39,20 @@ Polymer web component for drag and drop file uploads.
       transition: background-color 0.3s, bottom 0.3s;
       z-index: 2;
       @apply(--layout-fit);
+
+      @apply(--fu-area-zone);
     }
 
     #zone.dragenter {
       background-color: #63d2e6;
+
+      @apply(--fu-area-zone-enter);
     }
 
     :host #zone.uploading {
       bottom: 70%;
+
+      @apply(--fu-area-zone-uploading);
     }
 
     .label-wrap {
@@ -304,6 +310,18 @@ Polymer web component for drag and drop file uploads.
       },
 
       /**
+       * Set the Accept header for the request.
+       * If the field was already set via the headers properties, this setting is ignored.
+       * Supported values are:
+       * - json
+       * - html
+       */
+      accept: {
+        type: String,
+        value: 'json'
+      }
+
+      /**
        * Error messages to show for different situations.
        * Supported:
        * - errors.generic: A generic upload error
@@ -489,6 +507,20 @@ Polymer web component for drag and drop file uploads.
       }
 
       data.append(file.name, file);
+
+      if (this.headers['Accept'] == undefined) {
+        switch (this.accept) {
+  				case 'html':
+  					this.headers['Accept'] = 'test/html';
+  					break;
+  				case 'json':
+  					this.headers['Accept'] = 'application/json';
+  					break;
+  				default:
+  					this.headers['Accept'] = '*/*'
+            break;
+  			}
+      }
 
       var reqOptions = {
         url: this.url,
