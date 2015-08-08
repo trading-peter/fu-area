@@ -6,10 +6,10 @@ Or see the LICENSE file that comes with this code.
 -->
 
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../progress-bubble/progress-bubble.html">
 <link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../iron-ajax/iron-request.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="../iron-icons/editor-icons.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="../paper-icon-button/paper-icon-button.html">
 
@@ -27,6 +27,7 @@ Polymer web component for drag and drop file uploads.
     :host {
       display: block;
       position: relative;
+      color: #1b1b1b;
     }
 
     :host [hidden] {
@@ -34,8 +35,8 @@ Polymer web component for drag and drop file uploads.
     }
 
     #zone {
-      background-color: #1a9db5;
-      color: #fff;
+      background-color: #039BE5;
+      color: #E0F7FA;
       transition: background-color 0.3s, bottom 0.3s;
       z-index: 2;
       @apply(--layout-fit);
@@ -64,7 +65,7 @@ Polymer web component for drag and drop file uploads.
 
     .filelist {
       z-index: 1;
-      background-color: #F4F4F4;
+      background-color: #F5F5F5;
       @apply(--layout-fit);
       top: 30% !important;
       overflow-y: auto;
@@ -78,26 +79,26 @@ Polymer web component for drag and drop file uploads.
     }
 
     .progress {
-      position: relative;
       width: 48px;
       height: 48px;
       min-width: 48px;
       max-width: 48px;
+      @apply(--layout-horizontal);
+      @apply(--layout-center-center);
     }
 
-    .bg-icon {
-      @apply(--layout-fit);
-      fill: #c1c1c1;
-    }
+    progress-bubble {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+      text-shadow: none;
+      color: inherit;
+      font-size: 0.8em;
 
-    .front-icon {
-      fill: #63d2e6;
-    }
-
-    .front-icon-wrap {
-      overflow: hidden;
-      @apply(--layout-fit);
-      clip: rect(1000px, auto, auto, auto);
+      --progress-bubble-stroke-color: var(--fu-area-progress-stroke-color, #039BE5);
+      --progress-bubble-bg-stroke-color: var(--fu-area-progress-bg-stroke-color, #E0E0E0);
+      --progress-bubble-background: var(--fu-area-progress-background, transparent);
+      --progress-bubble-reflection-display: var(--fu-area-progress-reflection-display, none);
     }
 
     .file-info {
@@ -179,10 +180,7 @@ Polymer web component for drag and drop file uploads.
           <div class="file-item">
             <paper-icon-button icon="delete" on-tap="_onDelete" hidden$="[[!item.error]]"></paper-icon-button>
             <div class="progress" hidden$="[[item.error]]">
-              <iron-icon class="bg-icon" icon="editor:insert-drive-file"></iron-icon>
-              <div class="front-icon-wrap">
-                <iron-icon class="front-icon" icon="editor:insert-drive-file"></iron-icon>
-              </div>
+              <progress-bubble stroke-width="3"></progress-bubble>
             </div>
             <div class="file-info">
               <span>{{item.name}}</span>
@@ -578,29 +576,13 @@ Polymer web component for drag and drop file uploads.
 
     _setProgress: function(file, value) {
       var id = file.id;
-      var fileEl = this.$$('#' + id + ' .front-icon-wrap');
+      var fileEl = this.$$('#' + id);
 
       if (!fileEl) return;
 
-      var size = fileEl.getBoundingClientRect();
-      var max = size.height;
-      var x = max / 100 * (100 - value);
-
-      // The space is the padding between the iron-icon and it's svg.
-      // This padding is compensated by using a linear equation (y = mx + space).
-      var space = 5;
-
-      // Calculate m.
-      var m = (-1 * space) / (max / 2);
-      var relativeSpacing = m * x + space;
-      var clipX = x + relativeSpacing;
-
-      // If the value is 100%, always show the hole progress bar.
-      if (value == 100) {
-        clipX = 0;
-      }
-
-      fileEl.style.clip = 'rect(' + clipX + 'px, auto, auto, auto)';
+      var bubble = Polymer.dom(fileEl).querySelector('progress-bubble');
+      bubble.value = value;
+      Polymer.dom(bubble).textContent = value + '%';
     },
 
     _onDelete: function(e) {
