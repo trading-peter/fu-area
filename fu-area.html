@@ -581,6 +581,7 @@ Polymer web component for drag and drop file uploads.
       if (!fileEl) return;
 
       var bubble = Polymer.dom(fileEl).querySelector('progress-bubble');
+      value = Math.round(value);
       bubble.value = value;
       Polymer.dom(bubble).textContent = value + '%';
     },
