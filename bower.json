@@ -1,6 +1,6 @@
 {
   "name": "fu-area",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "authors": [
     "Peter Kaske <p.kaske@gmail.com>"
   ],
@@ -25,7 +25,7 @@
     "iron-ajax": "PolymerElements/iron-ajax#^1.0.0",
     "iron-icon": "PolymerElements/iron-icon#^1.0.0",
     "paper-icon-button": "PolymerElements/paper-icon-button#^1.0.0",
-    "progress-bubble": "pkaske/progress-bubble#master"
+    "progress-bubble": "tehapo/progress-bubble#^1.0.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0"
